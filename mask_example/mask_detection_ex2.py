@@ -18,7 +18,10 @@ from TrackEverything.tool_box import DetectionVars,ClassificationVars,InspectorV
 from TrackEverything.statistical_methods import StatisticalCalculator, StatMethods
 from TrackEverything.visualization_utils import VisualizationVars
 
+from play_video import run_video
+# pylint: enable=wrong-import-position
 
+#loading the detection model
 print("loading face detector model...")
 PROTOTXT_PATH = "detection_models/face_detector/deploy.prototxt"
 WEIGHTS_PATH = "detection_models/face_detector/res10_300x300_ssd_iter_140000.caffemodel"
@@ -127,7 +130,6 @@ def custome_classify_detection(model,det_images,size=(224,224)):
         predictions=reshaped_pred
     return predictions
 
-
 #set the detector
 detector_1=Detector(
     det_vars=DetectionVars(
@@ -153,53 +155,5 @@ detector_1=Detector(
 
 #Test it on a video
 VIDEO_PATH="video/OxfordStreet.mp4"
-cap = cv2.VideoCapture(VIDEO_PATH)
-
-length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-fps=(cap.get(cv2.CAP_PROP_FPS))
-h=int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-w=int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-print(f"h:{h} w:{w} fps:{fps}")
-
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-
-TRIM=True#whether or not to resize frame
 #since the head detction model requires a 512x512 image input
-if TRIM and w!=512 or h!=512:
-    dst_size=(512,512)
-
-FRAME_NUMBER = -1
-while cap.isOpened():
-    FRAME_NUMBER += 1
-    ret, frame = cap.read()
-    if not ret:
-        break
-    if FRAME_NUMBER%2==0:
-        continue
-    new_frm=frame
-    if TRIM:
-        #resize frame
-        new_frm=cv2.resize(new_frm,dst_size,fx=0,fy=0, interpolation = cv2.INTER_LINEAR)
-    #fix channel order since openCV flips them
-    new_frm=cv2.cvtColor(new_frm, cv2.COLOR_BGR2RGB)
-
-    #update the detector using the current frame
-    detector_1.update(new_frm)
-    #add the bounding boxes to the frame
-    detector_1.draw_visualization(new_frm)
-
-    #flip the channel order back
-    new_frm=cv2.cvtColor(new_frm, cv2.COLOR_RGB2BGR)
-    if TRIM:
-        #resize frame
-        new_frm=cv2.resize(new_frm,(w,h),fx=0,fy=0, interpolation = cv2.INTER_LINEAR)
-    #show frame
-    cv2.imshow('frame',new_frm)
-    #get a small summary of the number of object of each class
-    summ=detector_1.get_current_class_summary()
-    print(f"frame:{FRAME_NUMBER}, summary:{summ}")
-    #quite using the q key
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-cap.release()
-cv2.destroyAllWindows()
+run_video(VIDEO_PATH,(512,512),detector_1)

@@ -9,7 +9,6 @@ and robust, using tracking features and statistics.
 """
 import os
 import numpy as np
-import cv2
 #hide some tf loading data
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 # pylint: disable=wrong-import-position
@@ -18,12 +17,15 @@ from TrackEverything.detector import Detector
 from TrackEverything.tool_box import DetectionVars,InspectorVars
 from TrackEverything.statistical_methods import StatisticalCalculator, StatMethods
 from TrackEverything.visualization_utils import VisualizationVars
-
 from components import config
 from components.prior_box import priors_box
 from components.utils import decode_bbox_tf, compute_nms
 from network.network import SlimModel
 
+from play_video import run_video
+# pylint: enable=wrong-import-position
+
+#loading the detection model
 print("loading head detection model...")
 cfg = config.cfg
 image_size=(240, 320)
@@ -173,51 +175,5 @@ detector_1=Detector(
 
 #Test it on a video
 VIDEO_PATH="video/OxfordStreet.mp4"
-cap = cv2.VideoCapture(VIDEO_PATH)
-
-length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-fps=(cap.get(cv2.CAP_PROP_FPS))
-h=int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-w=int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-print(f"h:{h} w:{w} fps:{fps}")
-
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-
-TRIM=True#whether or not to resize frame
-#since the head detction model requires a 512x512 image input
-if TRIM and w!=512 or h!=512:
-    dst_size=(image_size[1],image_size[0])
-
-FRAME_NUMBER = -1
-while cap.isOpened():
-    FRAME_NUMBER += 1
-    ret, frame = cap.read()
-    if not ret:
-        break
-    new_frm=frame
-    if TRIM:
-        #resize frame
-        new_frm=cv2.resize(new_frm,dst_size,fx=0,fy=0, interpolation = cv2.INTER_LINEAR)
-    #fix channel order since openCV flips them
-    new_frm=cv2.cvtColor(new_frm, cv2.COLOR_BGR2RGB)
-
-    #update the detector using the current frame
-    detector_1.update(new_frm)
-    #add the bounding boxes to the frame
-    detector_1.draw_visualization(new_frm)
-
-    #flip the channel order back
-    new_frm=cv2.cvtColor(new_frm, cv2.COLOR_RGB2BGR)
-    if TRIM:
-        #resize frame
-        new_frm=cv2.resize(new_frm,(w,h),fx=0,fy=0, interpolation = cv2.INTER_LINEAR)
-    #show frame
-    cv2.imshow('frame',new_frm)
-    #get a small summary of the number of object of each class
-    summ=detector_1.get_current_class_summary()
-    print(f"frame:{FRAME_NUMBER}, summary:{summ}")
-    #quite using the q key
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-cap.release()
-cv2.destroyAllWindows()
+#since the head detction model requires a (image_size[1],image_size[0]) image input
+run_video(VIDEO_PATH,(image_size[1],image_size[0]),detector_1)

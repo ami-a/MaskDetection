@@ -1,21 +1,16 @@
-import os
-import numpy as np
-import cv2
-#hide some tf loading data
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+"""A module for loading the  Head Detection model from AVAuco/ssd_head_keras github repo
+"""
 from keras import backend as K
-from keras.models import load_model
-from keras.preprocessing import image
 from keras.optimizers import Adam
 from models.keras_ssd512 import ssd_512
 from keras_loss_function.keras_ssd_loss import SSDLoss
-from keras_layers.keras_layer_AnchorBoxes import AnchorBoxes
-from keras_layers.keras_layer_DecodeDetections import DecodeDetections
-from keras_layers.keras_layer_DecodeDetectionsFast import DecodeDetectionsFast
-from keras_layers.keras_layer_L2Normalization import L2Normalization
-
 
 def get_head_model():
+    """A method for loading the Head Detection model from AVAuco/ssd_head_keras github repo
+
+    Returns:
+        tf modle: Head Detection model
+    """
     # Set the image size.
     img_height = 512
     img_width = 512
@@ -53,7 +48,7 @@ def get_head_model():
                 top_k=200,
                 nms_max_output_size=400)
 
-    # 2: Load the trained weights into the model. Make sure the path correctly points to the model's .h5 file
+    # 2: Load the trained weights into the model.
     weights_path = './detection_models/head_detection_ssd512-hollywood-trainval.h5'
     model.load_weights(weights_path, by_name=True)
 
@@ -64,25 +59,3 @@ def get_head_model():
 
     # model.save('./detection_models/head_detection')
     return model
-
-    # Original images array
-    orig_images = [] 
-    # Resized images array
-    input_images = []
-
-    # We'll only load one image in this example.
-    img_path = 'images/people_drinking.jpg'
-    # img_path = 'examples/fish_bike.jpg'
-    # img_path = 'examples/rugby_players.jpg'
-
-    # Load the original image (used to display results)
-    orig_images.append(image.load_img(img_path))
-    # Load the image resized to the model's input size
-    img = image.load_img(img_path, target_size=(img_height, img_width))
-    img = image.img_to_array(img)
-    input_images.append(img)
-    input_images = np.array(input_images)
-
-    y_pred = model.predict(input_images)
-    print(y_pred)
-
