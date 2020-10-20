@@ -21,17 +21,18 @@ def get_det_vars_1():
     #custome detection model interpolation
     detection_threshold=0.4
     def custome_get_detection_array(
+            detection_var,
             image,
-            detection_model=det_model,
             detection_threshold=detection_threshold,
         ):
         """A method that utilize the detection model and return an np array of detections.
         Each detection in the format [confidence,(xmin,ymin,width,height)]
         Args:
+            detection_var (DetectionVars): the DetectionVars obj
             image (np.ndarray): current image
             detection_threshold (float): detection threshold
-            model (tensorflow model obj): classification model
         """
+        detection_model=detection_var.detection_model
         detections=detection_model.predict(np.asarray([image]))[0]
         num_detections = len(detections)
         #build the detection_array
@@ -80,17 +81,18 @@ def get_det_vars_2(prototxt_path, weights_path):
     #custome detection model interpolation
     detection_threshold=0.12
     def custome_get_detection_array(
+            detection_var,
             image,
-            detection_model=det_model,
             detection_threshold=detection_threshold,
         ):
         """A method that utilize the detection model and return an np array of detections.
         Each detection in the format [confidence,(xmin,ymin,width,height)]
         Args:
+            detection_var (DetectionVars): the DetectionVars obj
             image (np.ndarray): current image
             detection_threshold (float): detection threshold
-            model (tensorflow model obj): classification model
         """
+        detection_model=detection_var.detection_model
         blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300),(104.0, 177.0, 123.0),swapRB=False)
 
         # pass the blob through the network and obtain the face detections

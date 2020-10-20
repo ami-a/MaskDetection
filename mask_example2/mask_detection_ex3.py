@@ -43,3 +43,5 @@ detector_1=Detector(
 VIDEO_PATH="video/OxfordStreet.mp4"
 #since the head detction model requires a (320,240) image input
 run_video(VIDEO_PATH,(320,240),detector_1)
+# from play_video import save_video
+# save_video(VIDEO_PATH,(320,240),detector_1,"video/mask_03.avi")
