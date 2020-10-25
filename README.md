@@ -11,7 +11,7 @@ You can find all the models and test videos [here](https://drive.google.com/driv
 #### The Detection Model
 
 This example uses an Head Detection model from [AVAuco/ssd_head_keras github repository](https://github.com/AVAuco/ssd_head_keras) for detecting heads, I modified the files to be compatible with TF2.2. The model has been trained using the [Hollywood Heads dataset](https://www.robots.ox.ac.uk/~vgg/software/headmview/) as positive samples, and a subsample of the [EgoHands dataset](http://vision.soic.indiana.edu/projects/egohands/) as negative
-samples. This model has been developed using [Pierluigi Ferarri's Keras implementation of SSD](https://github.com/pierluigiferrari/ssd_keras/) as primary source, and replicates the original [Matconvnet version of our model](https://github.com/AVAuco/ssd_people). In the `custom_get_detection_array` I used the model to give me all the heads detected in a frame with a score of at least `detection_threshold=0.12`. Later I filter out redundant overlapping detections using the default Non-maximum Suppression (NMS) method. <p align="center"><img src="images/repos/head_det.jpg" width=540 height=404></p>
+samples. This model has been developed using [Pierluigi Ferarri's Keras implementation of SSD](https://github.com/pierluigiferrari/ssd_keras/) as primary source, and replicates the original [Matconvnet version of our model](https://github.com/AVAuco/ssd_people). In the `custom_get_detection_array` I used the model to give me all the heads detected in a frame with a score of at least `detection_threshold=0.4`. Later I filter out redundant overlapping detections using the default Non-maximum Suppression (NMS) method. <p align="center"><img src="images/repos/head_det.jpg" width=540 height=404></p>
 
 ### The Classification Model
 
@@ -25,12 +25,11 @@ I only tested it on one video I found online but the results are fair and settin
 ### Mask Example 2
 #### The Detection Model
 
-This example uses an Head Detection model from [AVAuco/ssd_head_keras github repository](https://github.com/AVAuco/ssd_head_keras) for detecting heads, I modified the files to be compatible with TF2.2. The model has been trained using the [Hollywood Heads dataset](https://www.robots.ox.ac.uk/~vgg/software/headmview/) as positive samples, and a subsample of the [EgoHands dataset](http://vision.soic.indiana.edu/projects/egohands/) as negative
-samples. This model has been developed using [Pierluigi Ferarri's Keras implementation of SSD](https://github.com/pierluigiferrari/ssd_keras/) as primary source, and replicates the original [Matconvnet version of our model](https://github.com/AVAuco/ssd_people). In the `custom_get_detection_array` I used the model to give me all the heads detected in a frame with a score of at least `detection_threshold=0.12`. Later I filter out redundant overlapping detections using the default Non-maximum Suppression (NMS) method. <p align="center"><img src="images/repos/head_det.jpg" width=540 height=404></p>
+This example uses a Face Detection model from OpenCV for detecting faces. OpenCV ships out-of-the-box with pre-trained Haar cascades that can be used for face detection and a deep learning-based face detector that has been part of OpenCV since OpenCV 3.3. In the `custom_get_detection_array` I used OpenCV to give me all the faces detected in a frame with a score of at least `detection_threshold=0.12`. Later I filter out redundant overlapping detections using the default Non-maximum Suppression (NMS) method.
 
 ### The Classification Model
 
-After we have the heads from the detection model, I put them through a classification model to determine the probability of them being with a mask. I used the Face Mask classification model from [chandrikadeb7/Face-Mask-Detection github repository](https://github.com/chandrikadeb7/Face-Mask-Detection). It's based on the MobileNetV2 architecture, it’s also computationally efficient and thus making it easier to deploy the model to embedded systems (Raspberry Pi, Google Coral, etc.). <p align="center"><img src="images/repos/mask_class_1.png" width=540 height=328></p>
+I used the same [classification model](#the-classification-model) as [example 1](#example_1).
 
 ## Results
 
