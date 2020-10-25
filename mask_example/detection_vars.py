@@ -13,14 +13,14 @@ def get_det_vars_1():
     Returns:
         DetectionVars: the detection model variables
     """
-    #custome loading the detection model and only providing the model to the DetectionVars
+    #custom loading the detection model and only providing the model to the DetectionVars
     print("loading head detection model...")
     det_model=load_head_model.get_head_model()
     print("detection model loaded!")
 
-    #custome detection model interpolation
+    #custom detection model interpolation
     detection_threshold=0.4
-    def custome_get_detection_array(
+    def custom_get_detection_array(
             detection_var,
             image,
             detection_threshold=detection_threshold,
@@ -56,7 +56,7 @@ def get_det_vars_1():
 
     return DetectionVars(
         detection_model=det_model,
-        detection_proccessing=custome_get_detection_array,
+        detection_proccessing=custom_get_detection_array,
         detection_threshold=detection_threshold
     )
 
@@ -72,15 +72,15 @@ def get_det_vars_2(prototxt_path, weights_path):
     Returns:
         DetectionVars: the detection model variables
     """
-    #custome loading the detection model and only providing the model to the DetectionVars
+    #custom loading the detection model and only providing the model to the DetectionVars
     #loading the detection model
     print("loading face detector model...")
     det_model = cv2.dnn.readNet(prototxt_path, weights_path)
     print("detection model loaded!")
 
-    #custome detection model interpolation
+    #custom detection model interpolation
     detection_threshold=0.12
-    def custome_get_detection_array(
+    def custom_get_detection_array(
             detection_var,
             image,
             detection_threshold=detection_threshold,
@@ -101,7 +101,7 @@ def get_det_vars_2(prototxt_path, weights_path):
         #detections=detection_model.predict(np.asarray([image]))[0]
         num_detections = len(detections)
         #boxes
-        boxes =[get_box_cordinates(detections[i][3:7],image.shape) for i in range(num_detections)]
+        boxes =[get_box_coordinates(detections[i][3:7],image.shape) for i in range(num_detections)]
         #build the detection_array
         output= [
             [
@@ -115,15 +115,15 @@ def get_det_vars_2(prototxt_path, weights_path):
         #print(output)
         return output
 
-    def get_box_cordinates(box,img_shape):
-        """#convert model cordinates format to (xmin,ymin,width,height)
+    def get_box_coordinates(box,img_shape):
+        """#convert model coordinates format to (xmin,ymin,width,height)
 
         Args:
-            box ((xmin,xmax,ymin,ymax)): the cordinates are relative [0,1]
+            box ((xmin,xmax,ymin,ymax)): the coordinates are relative [0,1]
             img_shape ((height,width,channels)): the frame size
 
         Returns:
-            (xmin,ymin,width,height): (xmin,ymin,width,height): converted cordinates
+            (xmin,ymin,width,height): (xmin,ymin,width,height): converted coordinates
         """
         height,width, = img_shape[:2]
         xmin=max(int(box[0]*width),0)
@@ -139,6 +139,6 @@ def get_det_vars_2(prototxt_path, weights_path):
 
     return DetectionVars(
         detection_model=det_model,
-        detection_proccessing=custome_get_detection_array,
+        detection_proccessing=custom_get_detection_array,
         detection_threshold=detection_threshold
     )

@@ -27,17 +27,17 @@ def get_model(det_model_path):
     det_model.load_weights(det_model_path)
     print("detection model loaded!")
     return det_model
-#custome detection model interpolation
+#custom detection model interpolation
 DETECTION_THRESHOLD=0.4
-def get_box_cordinates(box,img_shape):
-    """#convert model cordinates format to (xmin,ymin,width,height)
+def get_box_coordinates(box,img_shape):
+    """#convert model coordinates format to (xmin,ymin,width,height)
 
     Args:
-        box ((xmin,xmax,ymin,ymax)): the cordinates are relative [0,1]
+        box ((xmin,xmax,ymin,ymax)): the coordinates are relative [0,1]
         img_shape ((height,width,channels)): the frame size
 
     Returns:
-        (xmin,ymin,width,height): (xmin,ymin,width,height): converted cordinates
+        (xmin,ymin,width,height): (xmin,ymin,width,height): converted coordinates
     """
     height,width, = img_shape[:2]
     xmin=max(int(box[0]*width),0)
@@ -104,7 +104,7 @@ def parse_predict(predictions):
 
     return boxes, classes,  out_scores.numpy()
 
-def custome_get_detection_array(
+def custom_get_detection_array(
         detection_var,
         image,
     ):
@@ -125,7 +125,7 @@ def custome_get_detection_array(
     output= [
         [
             get_class(scores[i],classes[i]),#score
-            get_box_cordinates(boxes[i],image.shape),
+            get_box_coordinates(boxes[i],image.shape),
         ]
             for i in range(num_detections)
     ]
@@ -162,6 +162,6 @@ def get_det_vars(det_model_path):
     """
     return DetectionVars(
         detection_model=get_model(det_model_path),
-        detection_proccessing=custome_get_detection_array,
+        detection_proccessing=custom_get_detection_array,
         detection_threshold=DETECTION_THRESHOLD
     )

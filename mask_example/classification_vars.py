@@ -13,8 +13,8 @@ def get_class_vars(class_model_path):
     Returns:
         ClassificationVars: classification variables for the detector
     """
-    #custome classification model interpolation
-    def custome_classify_detection(model,det_images,size=(224,224)):
+    #custom classification model interpolation
+    def custom_classify_detection(model,det_images,size=(224,224)):
         """Classify a batch of images
 
         Args:
@@ -22,7 +22,7 @@ def get_class_vars(class_model_path):
             det_images (np.array): batch of images in numpy array to classify
             size (tuple, optional): size to resize to, 1-D int32 Tensor of 2 elements:
                 new_height, new_width (if None then no resizing).
-                (In custome function you can use model.inputs[0].shape.as_list()
+                (In custom function you can use model.inputs[0].shape.as_list()
                 and set size to default)
         Returns:
             Numpy NxM vector where N num of images, M num of classes and filled with scores.
@@ -56,5 +56,5 @@ def get_class_vars(class_model_path):
     #tf.keras.models.load_model(path) will work
     return ClassificationVars(
         class_model_path=class_model_path,
-        class_proccessing=custome_classify_detection
+        class_proccessing=custom_classify_detection
     )
