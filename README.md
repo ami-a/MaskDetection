@@ -29,7 +29,7 @@ This example uses a Face Detection model from OpenCV for detecting faces. OpenCV
 
 ### The Classification Model
 
-I used the same [classification model](#the-classification-model) as [example 1](#example_1).
+I used the same [classification model](#the-classification-model) as [example 1](#mask-example-1).
 
 ## Results
 
