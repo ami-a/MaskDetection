@@ -35,3 +35,14 @@ I used the same [classification model](#the-classification-model) as in [example
 
 The results are fair and better from example 1, mainly since the face detector is better. The classification model is not very good and has a lot of misses, but optimizing the detector's parameters can make better results.
 <p align="center"><img src="images/screens/mask02.png" width=564 height=318></p>
+
+### Mask Example 3
+
+#### The Detection Model
+
+This example uses a Mask Detection and Classification model from [PureHing/face-mask-detection-tf2 github repository](https://github.com/PureHing/face-mask-detection-tf2) for detecting faces and classify them. This model is a lightweight face mask detection model based on ssd and the backbone is MobileNet and RFB. Since this model also classifies there is no need for an additional classification model. In the `detection_vars.py` I use the model to give me all the heads detected in a frame with a score of at least `DETECTION_THRESHOLD=0.4` and later I filter out redundant overlapping detections using the default Non-maximum Suppression (NMS) method. I also receive classification data score from the model and input them as a vector for the detector. <p align="center"><img src="images/repos/head_det.jpg" width=540 height=404></p>
+
+## Results
+
+I tested it on the same video I found online and the results are very good and the best so far. Changing the setting could help for receiving even greater results.
+<p align="center"><img src="images/screens/mask03.png" width=564 height=337></p>
