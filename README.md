@@ -6,7 +6,8 @@ These are examples of using the **TrackEverything** package, you can find instru
 
 You can find all the models and test videos [here](https://drive.google.com/drive/folders/19jsLpv8Ql_ebqYZy1vnC3Snp0dNQ8HX0?usp=sharing).
 
-### The Detection Model
+### Mask Examples 1
+#### The Detection Models
 
 In this example I used the base of [this](https://github.com/tensorflow/models/tree/master/research/object_detection) Object Detection API(I modified the version for TF1 since the TF2 version only came out later). This model is trained on the [COCO dataset](http://cocodataset.org/) which detects around 90 different objects, you can choose [here](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf1_detection_zoo.md) some models with different CNN architectures. In the `custom_get_detection_array` I used the model to give me all the persons detected in a frame with a score of at least `DETECTION_THRESHOLD=0.5`. Later I filter out redundant overlapping detections using the default Non-maximum Suppression (NMS) method.
 
