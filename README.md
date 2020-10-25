@@ -29,9 +29,9 @@ This example uses a Face Detection model from OpenCV for detecting faces. OpenCV
 
 ### The Classification Model
 
-I used the same [classification model](#the-classification-model) as [example 1](#mask-example-1).
+I used the same [classification model](#the-classification-model) as in [example 1](#mask-example-1).
 
 ## Results
 
-I only tested it on one video I found online but the results are fair and setting could be optimized much more. The head detection is very rudimentary and has a lot of misses and partial matches.
-<p align="center"><img src="images/screens/mask01.png" width=564 height=337></p>
+The results are fair and better from example 1, mainly since the face detector is better. The classification model is not very good and has a lot of misses, but optimizing the detector's parameters can make better results.
+<p align="center"><img src="images/screens/mask02.png" width=564 height=318></p>
